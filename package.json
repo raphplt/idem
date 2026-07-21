@@ -1,0 +1,22 @@
+{
+  "name": "idem",
+  "private": true,
+  "packageManager": "pnpm@11.3.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "typecheck": "turbo typecheck",
+    "dev:api": "pnpm --filter @idem/api dev",
+    "dev:mobile": "pnpm --filter mobile dev",
+    "db:generate": "pnpm --filter @idem/db generate",
+    "db:migrate": "pnpm --filter @idem/db migrate",
+    "db:studio": "pnpm --filter @idem/db studio"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0",
+    "typescript": "^5.8.3"
+  }
+}

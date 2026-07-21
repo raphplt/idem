@@ -1,0 +1,49 @@
+{
+  "expo": {
+    "name": "idem",
+    "slug": "idem",
+    "version": "0.0.1",
+    "scheme": "idem",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.raphplt.idem",
+      "usesAppleSignIn": true
+    },
+    "android": {
+      "package": "com.raphplt.idem"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-image",
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#0d0d12"
+        }
+      ],
+      "expo-sharing",
+      "expo-secure-store",
+      "expo-web-browser",
+      "expo-apple-authentication",
+      "expo-notifications",
+      [
+        "expo-media-library",
+        {
+          "savePhotosPermission": "idem enregistre l'image de ton passeport de goût dans tes photos."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "idem utilise ta position pour contextualiser les suggestions autour de toi."
+        }
+      ]
+    ]
+  }
+}
