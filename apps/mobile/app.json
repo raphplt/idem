@@ -15,7 +15,25 @@
       "usesAppleSignIn": true
     },
     "android": {
-      "package": "com.raphplt.idem"
+      "package": "com.raphplt.idem",
+      "permissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.READ_MEDIA_VIDEO",
+        "android.permission.READ_MEDIA_AUDIO",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.READ_MEDIA_VIDEO",
+        "android.permission.READ_MEDIA_AUDIO",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ]
     },
     "plugins": [
       "expo-router",
@@ -44,6 +62,16 @@
           "locationWhenInUsePermission": "idem utilise ta position pour contextualiser les suggestions autour de toi."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "40857ddf-24a6-495b-a8a9-1d74d5fec9fa"
+      }
+    },
+    "owner": "raphplt",
+    "updates": {
+      "url": "https://u.expo.dev/40857ddf-24a6-495b-a8a9-1d74d5fec9fa"
+    }
   }
 }
