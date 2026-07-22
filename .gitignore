@@ -8,6 +8,10 @@ dist/
 .expo/
 *.tsbuildinfo
 
+# natif généré par prebuild (CNG : ne jamais committer, EAS le régénère)
+apps/mobile/android/
+apps/mobile/ios/
+
 # env
 .env
 .env.local
