@@ -27,6 +27,10 @@ export default function RootLayout() {
         >
           <Tabs.Screen name="index" options={{ title: "Noter" }} />
           <Tabs.Screen name="passport" options={{ title: "Passeport" }} />
+          <Tabs.Screen
+            name="onboarding"
+            options={{ href: null, tabBarStyle: { display: "none" } }}
+          />
         </Tabs>
       </QueryClientProvider>
     </GestureHandlerRootView>

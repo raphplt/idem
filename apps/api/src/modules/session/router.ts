@@ -6,6 +6,6 @@ export const sessionRouter = router({
   next: authedProcedure
     .input(nextQuestionInput)
     .query(({ ctx, input }) =>
-      nextQuestion(ctx.db, ctx.userId, input.recentDomains),
+      nextQuestion(ctx.db, ctx.userId, input.recentDomains, input.onboarding),
     ),
 });

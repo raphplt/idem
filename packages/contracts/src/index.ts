@@ -49,6 +49,8 @@ export type SubmitJudgmentInput = z.infer<typeof submitJudgmentInput>;
 export const nextQuestionInput = z.object({
   /** Domaines des dernières questions, pour la fatigue de domaine (SPEC.md §5). */
   recentDomains: z.array(z.enum(DOMAINS)).max(16).default([]),
+  /** Onboarding : axes d'abord, puis duels très populaires (SPEC.md §6). */
+  onboarding: z.boolean().default(false),
 });
 export type NextQuestionInput = z.infer<typeof nextQuestionInput>;
 

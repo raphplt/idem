@@ -12,7 +12,7 @@ import httpx
 from ..models import RawEntity
 
 BASE_URL = "https://openlibrary.org"
-FIELDS = "key,title,author_name,first_publish_year,readinglog_count"
+FIELDS = "key,title,author_name,first_publish_year,readinglog_count,cover_i"
 SUBJECTS = [
     "fiction",
     "fantasy",
@@ -71,6 +71,10 @@ def extract(per_subject: int = 200) -> list[RawEntity]:
             attributes["year"] = int(doc["first_publish_year"])
         if doc.get("author_name"):
             attributes["author"] = doc["author_name"][0]
+        if doc.get("cover_i"):
+            attributes["image"] = (
+                f"https://covers.openlibrary.org/b/id/{doc['cover_i']}-M.jpg"
+            )
         entities.append(
             RawEntity(
                 source="openlibrary",

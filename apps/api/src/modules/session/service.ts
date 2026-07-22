@@ -45,10 +45,17 @@ export async function nextQuestion(
   db: Db,
   userId: string,
   recentDomains: Domain[],
+  onboarding = false,
 ): Promise<NextQuestion> {
   const preferred = weightedPick(TUNING.selection.SESSION_MIX) as JudgmentKind;
   const fallbacks: JudgmentKind[] = ["duel", "verdict", "axis"];
-  const order = [preferred, ...fallbacks.filter((k) => k !== preferred)];
+  // Onboarding (SPEC.md §6) : axes d'abord, puis duels sur du très connu.
+  const order = onboarding
+    ? (["axis", "duel", "verdict"] as JudgmentKind[])
+    : [preferred, ...fallbacks.filter((k) => k !== preferred)];
+  const poolLimit = onboarding
+    ? TUNING.selection.ONBOARDING_POOL
+    : TUNING.selection.CANDIDATE_POOL;
 
   const availableDomains = (await domainsWithActiveEntities(db)).filter((d) =>
     (CATALOG_DOMAINS as readonly Domain[]).includes(d),
@@ -64,7 +71,9 @@ export async function nextQuestion(
     const domain = pickDomain(availableDomains, recentDomains);
 
     if (kind === "duel") {
-      const pool = await catalogCandidates(db, userId, domain);
+      const pool = await catalogCandidates(db, userId, domain, {
+        limit: poolLimit,
+      });
       if (pool.length >= 2) {
         const [a, b] = sampleTwo(pool);
         return { kind: "duel", domain, a: toQuestion(a), b: toQuestion(b) };

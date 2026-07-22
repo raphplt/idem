@@ -19,6 +19,9 @@ class RawEntity:
     # True si la source est fiable (API réelle) ou si la liste construite/LLM
     # a été relue par un humain. False -> quarantaine obligatoire (SPEC.md §2.4).
     reviewed: bool = True
+    # Référence au parent hiérarchique (type, nom) — résolue à la publication
+    # par clé de blocage (ex. plat -> cuisine, morceau -> album).
+    parent_ref: tuple[str, str] | None = None
 
     # Rempli par NORMALIZE
     normalized_name: str | None = None

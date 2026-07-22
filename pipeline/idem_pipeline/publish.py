@@ -11,6 +11,7 @@ import psycopg
 from psycopg.types.json import Json
 
 from .models import RawEntity
+from .normalize import blocking_key, normalize_name
 
 
 @dataclass
@@ -82,5 +83,29 @@ def run(
                     ),
                 )
     if not dry_run:
+        _link_parents(conn, entities)
         conn.commit()
     return stats
+
+
+def _link_parents(conn: psycopg.Connection, entities: list[RawEntity]) -> None:
+    """Seconde passe : résout parent_ref par clé de blocage (idempotent)."""
+    with conn.cursor() as cur:
+        for e in entities:
+            if not e.parent_ref:
+                continue
+            parent_type, parent_name = e.parent_ref
+            parent_key = blocking_key(e.domain, parent_type, normalize_name(parent_name))
+            cur.execute(
+                """
+                update entities set parent_id = (
+                  select id from entities
+                  where blocking_key = %s and type = %s::entity_type
+                    and status <> 'merged'
+                  limit 1
+                )
+                where blocking_key = %s and type = %s::entity_type
+                  and parent_id is null
+                """,
+                (parent_key, parent_type, e.blocking_key, e.type),
+            )

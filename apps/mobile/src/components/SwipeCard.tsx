@@ -1,4 +1,5 @@
-import { useWindowDimensions, StyleSheet, Text } from "react-native";
+import { useWindowDimensions, StyleSheet, Text, View } from "react-native";
+import { Image } from "expo-image";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   runOnJS,
@@ -21,11 +22,12 @@ const SWIPE_RATIO = 0.3; // fraction de la largeur d'écran pour valider
 type Props = {
   title: string;
   subtitle?: string | null;
+  imageUrl?: string | null;
   disabled?: boolean;
   onChoose: () => void;
 };
 
-export function SwipeCard({ title, subtitle, disabled, onChoose }: Props) {
+export function SwipeCard({ title, subtitle, imageUrl, disabled, onChoose }: Props) {
   const { width } = useWindowDimensions();
   const translateX = useSharedValue(0);
   const pressed = useSharedValue(false);
@@ -76,8 +78,18 @@ export function SwipeCard({ title, subtitle, disabled, onChoose }: Props) {
       <Animated.View
         style={[styles.card, disabled && styles.cardDisabled, animatedStyle]}
       >
-        <Text style={styles.cardTitle}>{title}</Text>
-        {subtitle ? <Text style={styles.cardSub}>{subtitle}</Text> : null}
+        {imageUrl ? (
+          <Image
+            source={{ uri: imageUrl }}
+            style={styles.image}
+            contentFit="cover"
+            transition={150}
+          />
+        ) : null}
+        <View style={styles.textZone}>
+          <Text style={styles.cardTitle}>{title}</Text>
+          {subtitle ? <Text style={styles.cardSub}>{subtitle}</Text> : null}
+        </View>
       </Animated.View>
     </GestureDetector>
   );
@@ -87,11 +99,20 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#1c1c26",
     borderRadius: 16,
-    padding: 24,
+    padding: 20,
     minHeight: 110,
-    justifyContent: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 16,
   },
   cardDisabled: { opacity: 0.5 },
+  image: {
+    width: 56,
+    height: 80,
+    borderRadius: 8,
+    backgroundColor: "#12121a",
+  },
+  textZone: { flexShrink: 1 },
   cardTitle: { color: "#ffffff", fontSize: 20, fontWeight: "600" },
   cardSub: { color: "#8a8a99", fontSize: 14, marginTop: 4 },
 });

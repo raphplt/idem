@@ -9,8 +9,11 @@ import click
 
 from . import db, dedup, normalize, publish, validate
 from .extract import axes as axes_extract
+from .extract import deezer as deezer_extract
+from .extract import food as food_extract
 from .extract import openlibrary as openlibrary_extract
 from .extract import tmdb as tmdb_extract
+from .extract import wikidata_places as wikidata_extract
 
 
 @click.group()
@@ -19,17 +22,31 @@ def main() -> None:
 
 
 @main.command()
-@click.argument("source", type=click.Choice(["tmdb", "openlibrary", "axes"]))
+@click.argument(
+    "source",
+    type=click.Choice(
+        ["tmdb", "openlibrary", "wikidata-places", "deezer", "food", "axes"]
+    ),
+)
 @click.option("--pages", default=150, help="Pages TMDB (20 films/page).")
 @click.option("--per-subject", default=200, help="Livres par sujet OpenLibrary.")
+@click.option("--limit", default=600, help="Villes Wikidata.")
 @click.option("--dry-run", is_flag=True, help="Ne rien écrire en base.")
-def ingest(source: str, pages: int, per_subject: int, dry_run: bool) -> None:
+def ingest(
+    source: str, pages: int, per_subject: int, limit: int, dry_run: bool
+) -> None:
     """SOURCE → EXTRACT → NORMALIZE → DEDUP → VALIDATE → PUBLISH."""
     click.echo(f"[extract] source={source}")
     if source == "tmdb":
         entities = tmdb_extract.extract(pages=pages)
     elif source == "openlibrary":
         entities = openlibrary_extract.extract(per_subject=per_subject)
+    elif source == "wikidata-places":
+        entities = wikidata_extract.extract(limit=limit)
+    elif source == "deezer":
+        entities = deezer_extract.extract()
+    elif source == "food":
+        entities = food_extract.extract()
     else:
         entities = axes_extract.extract()
     click.echo(f"[extract] {len(entities)} entités brutes")
@@ -51,11 +68,12 @@ def ingest(source: str, pages: int, per_subject: int, dry_run: bool) -> None:
             f"[publish]{mode} {stats.inserted} insérées, "
             f"{stats.updated} mises à jour, {stats.quarantined} en quarantaine"
         )
-        if quarantined and source == "axes":
+        curated_files = {"axes": "axes.fr.json", "food": "food.fr.json"}
+        if quarantined and source in curated_files:
             click.echo(
-                "→ Les axes restent en quarantaine tant que `reviewed` est false "
-                "dans pipeline/sources/axes.fr.json. Relire le fichier, passer "
-                "reviewed à true, puis relancer l'ingestion."
+                f"→ Ces entités restent en quarantaine tant que `reviewed` est "
+                f"false dans pipeline/sources/{curated_files[source]}. Relire le "
+                "fichier, passer reviewed à true, puis relancer l'ingestion."
             )
 
 

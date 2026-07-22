@@ -37,8 +37,10 @@ cd pipeline && pip install -e . && idem-pipeline ingest tmdb
 
 - `apps/web` n'existe pas encore (Phase 3) — son périmètre sera strictement :
   passeport public, OG images, landing. Aucune fonctionnalité produit.
-- Le mode `sort` est implémenté côté API mais `SESSION_MIX.sort = 0` tant que
-  l'écran de tri mobile n'existe pas (Phase 1).
-- Les axes abstraits restent en quarantaine tant que
-  `pipeline/sources/axes.fr.json` n'a pas `reviewed: true` (relecture humaine
-  obligatoire, SPECS.md §2.4).
+- Les catalogues construits (`pipeline/sources/axes.fr.json`, `food.fr.json`)
+  restent en quarantaine tant que leur champ `reviewed` est false (relecture
+  humaine obligatoire, SPECS.md §2.4). Ne JAMAIS passer `reviewed` à true
+  soi-même : c'est l'humain qui relit.
+- L'API écoute sur le port 3210 (3000 est souvent pris par d'autres projets).
+- Les dossiers `apps/mobile/android/` et `ios/` sont générés (CNG) et
+  gitignorés — ne jamais les committer.

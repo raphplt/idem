@@ -53,18 +53,20 @@ export const TUNING = {
     W_FATIGUE: 0.35,
     /** Taille du vivier de candidats parmi lesquels on échantillonne. */
     CANDIDATE_POOL: 40,
+    /**
+     * Vivier réduit pendant l'onboarding : entités très connues seulement —
+     * proposer un duel entre deux inconnues est la première cause d'abandon
+     * (SPEC.md §5).
+     */
+    ONBOARDING_POOL: 15,
     /** Nombre de domaines récents transmis par le client pour la fatigue. */
     RECENT_DOMAINS_WINDOW: 8,
-    /**
-     * Répartition des modes dans une session (SPEC.md §5 : 60/20/15/5).
-     * Le tri est à 0 tant que l'écran de tri mobile n'existe pas (Phase 1) —
-     * le remonter à 0.05 ensuite, en redescendant le duel à 0.60.
-     */
+    /** Répartition des modes dans une session (SPEC.md §5 : 60/20/15/5). */
     SESSION_MIX: {
-      duel: 0.65,
+      duel: 0.6,
       verdict: 0.2,
       axis: 0.15,
-      sort: 0,
+      sort: 0.05,
     } as Record<string, number>,
     /** Nombre d'entités dans un tri. */
     SORT_SIZE: 5,
