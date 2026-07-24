@@ -55,8 +55,11 @@ cd apps/mobile && pnpm exec expo run:ios --device   # ou run:android
 # Pour activer l'OTA plus tard : eas update:configure (avant le build).
 ```
 
-Sur un vrai téléphone, mettre `EXPO_PUBLIC_API_URL=http://<ip-locale>:3210`
-dans `.env` (le téléphone doit joindre le Mac sur le réseau local).
+Sur un vrai téléphone (ou émulateur Android), mettre
+`EXPO_PUBLIC_API_URL=http://<ip-locale>:3210` dans **`apps/mobile/.env`**
+(Expo ne lit pas le `.env` racine), puis relancer Metro — les variables
+`EXPO_PUBLIC_*` sont figées au bundle. Le téléphone doit joindre le Mac sur
+le réseau local.
 
 ## Catalogues construits — relecture obligatoire
 

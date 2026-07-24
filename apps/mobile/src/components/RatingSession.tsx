@@ -14,7 +14,7 @@ import type {
   QuestionEntity,
   SubmitJudgmentInput,
 } from "@idem/contracts";
-import { ensureUser, trpc } from "@/lib/api";
+import { API_URL, ensureUser, trpc } from "@/lib/api";
 import { SwipeCard } from "./SwipeCard";
 import { SortRanker } from "./SortRanker";
 import { PrecisionGauge } from "./PrecisionGauge";
@@ -102,10 +102,9 @@ export function RatingSession({ onboarding = false, onAnswered }: Props) {
     mutationFn: (input: SubmitJudgmentInput) =>
       trpc.judgment.submit.mutate(input),
     onSuccess: () => {
-      setAnswered((n) => {
-        onAnswered?.(n + 1);
-        return n + 1;
-      });
+      const next = answered + 1;
+      setAnswered(next);
+      onAnswered?.(next);
     },
     onSettled: () => {
       question.refetch();
@@ -140,8 +139,13 @@ export function RatingSession({ onboarding = false, onAnswered }: Props) {
       <View style={styles.center}>
         <Text style={styles.error}>API injoignable.</Text>
         <Text style={styles.hint}>
-          Lancer `pnpm dev:api` (port 3210) et vérifier EXPO_PUBLIC_API_URL.
+          URL utilisée : {API_URL}
+          {"\n"}Sur téléphone : mettre l'IP locale du Mac dans
+          apps/mobile/.env (EXPO_PUBLIC_API_URL), relancer Metro.
         </Text>
+        <Pressable style={styles.button} onPress={() => user.refetch()}>
+          <Text style={styles.buttonText}>Réessayer</Text>
+        </Pressable>
       </View>
     );
   }

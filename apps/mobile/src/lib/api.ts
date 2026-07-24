@@ -9,7 +9,8 @@ import type { AppRouter } from "@idem/api";
  * viennent de @idem/contracts (SPEC.md §7.1).
  */
 
-const API_URL = process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:3210";
+export const API_URL =
+  process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:3210";
 const USER_KEY = "idem.userId";
 
 let userId: string | null = null;
